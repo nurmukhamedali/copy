@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import productApi from "api/products";
+import categoryApi from "api/categories";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        products: frontendData.products,
+        products,
+        categories,
         profile: frontendData.profile
     },
     getters: {
-        sortedProducts: state => state.products.sort((a, b) => -(a.id - b.id))
+        sortedProducts: state => (state.products || []).sort((a, b) => -(a.id - b.id)),
+        sortedCategories: state => (state.categories || []).sort((a, b) => -(a.id - b.id))
     },
     mutations: {
+        // Product
         addProductMutation(state, product){
             state.products = [
                 ...state.products,
@@ -37,9 +41,36 @@ export default new Vuex.Store({
                     ...state.products.slice(deletionIndex + 1)
                 ]
             }
+        },
+        // Category
+        addCategoryMutation(state, category){
+            state.categories = [
+                ...state.categories,
+                category
+            ]
+        },
+        updateCategoryMutation(state, category){
+            const updateIndex = state.categories.findIndex(item => item.id === category.id)
+
+            state.categories = [
+                ...state.categories.slice(0, updateIndex),
+                category,
+                ...state.categories.slice(updateIndex + 1)
+            ]
+        },
+        removeCategoryMutation(state, category){
+            const deletionIndex = state.categories.findIndex(item => item.id === category.id)
+
+            if (deletionIndex > -1){
+                state.categories = [
+                    ...state.categories.slice(0, deletionIndex),
+                    ...state.categories.slice(deletionIndex + 1)
+                ]
+            }
         }
     },
     actions: {
+        // Product
         async addProductAction({commit, state}, product){
             const result = await productApi.add(product)
             const data = await result.json()
@@ -62,6 +93,28 @@ export default new Vuex.Store({
                 commit('removeProductMutation', product)
             }
         },
+        // Category
+        async addCategoryAction({commit, state}, category){
+            const result = await categoryApi.add(category)
+            const data = await result.json()
+            const index = state.categories.findIndex(item => item.id === data.id);
 
+            if (index > -1){
+                commit('updateCategoryMutation', data)
+            } else {
+                commit('addCategoryMutation', data)
+            }
+        },
+        async updateCategoryAction({commit}, category){
+            const result = await categoryApi.update(category)
+            const data = await result.json()
+            commit('updateCategoryMutation', data)
+        },
+        async removeCategoryAction({commit}, category){
+            const result = await categoryApi.remove(category.id)
+            if (result.ok){
+                commit('removeCategoryMutation', category)
+            }
+        },
     }
 })

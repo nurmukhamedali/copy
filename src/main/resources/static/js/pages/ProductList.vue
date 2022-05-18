@@ -1,6 +1,5 @@
 <template>
-  <div>
-  <h3>Products</h3>
+  <v-container>
     <v-layout align-start justify-space-around row reverse wrap>
       <v-flex d-flex xs12 sm5 md3>
         <product-form :productAttr="product"/>
@@ -14,7 +13,7 @@
         </v-layout>
       </v-flex>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -1,6 +1,5 @@
 package kz.pine.config;
 
-import kz.pine.domain.Cart;
 import kz.pine.domain.User;
 import kz.pine.repositories.CartRepository;
 import kz.pine.repositories.CustomerRepository;
@@ -21,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/js/**", "/error**").permitAll()
+                .antMatchers("/", "/login**", "/js/**", "/error**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and()
@@ -37,7 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 nuser.setId(id);
                 nuser.setUsername((String) map.get("email"));
-                nuser.setCart(cartRepository.save(new Cart()));
+                nuser.setName((String) map.get("name"));
+                nuser.setAvatar((String) map.get("picture"));
+//                nuser.setCart(cartRepository.save(new Cart()));
                 return nuser;
             });
             return customerRepository.save(user);

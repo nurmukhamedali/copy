@@ -20,6 +20,14 @@
                   placeholder="Enter link to image"
                   v-model="image"
     />
+    <v-select
+        :items="sortedCategories"
+        v-model="category"
+        name="category"
+        item-text="name"
+        return-object
+        label="Select a category"
+    ></v-select>
     <v-btn class="ma-2" @click="post">
       Add
     </v-btn>
@@ -27,11 +35,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ProductForm",
   props: ['productAttr'],
+  computed: mapGetters(['sortedCategories']),
   data(){
     return {
       id: null,
@@ -39,7 +48,7 @@ export default {
       brand: '',
       image: '',
       price: '',
-      category: 9
+      category: {id: 9}
     }
   },
   watch: {
@@ -75,7 +84,6 @@ export default {
       this.image = ''
       this.brand = ''
       this.price = ''
-      this.category = 9
     }
   }
 }

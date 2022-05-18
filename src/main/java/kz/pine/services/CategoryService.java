@@ -1,69 +1,54 @@
 package kz.pine.services;
 
 import kz.pine.domain.Category;
-import kz.pine.form.CategoryForm;
+import kz.pine.domain.Category;
+import kz.pine.domain.Views;
+import kz.pine.dto.EventType;
+import kz.pine.dto.ObjectType;
 import kz.pine.repositories.CategoryRepository;
+import kz.pine.util.WsSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @Service
 public class CategoryService {
+    private CategoryRepository categoryRepository;
+    private final BiConsumer<EventType, Category> wsSender;
+
     @Autowired
-    CategoryRepository categoryRepository;
+    public CategoryService(CategoryRepository categoryRepository, WsSender wsSender) {
+        this.categoryRepository = categoryRepository;
+        this.wsSender = wsSender.getSender(ObjectType.PRODUCT, Views.FullCategoryInfo.class);
+    }
 
     public List<Category> findAll(){
         return categoryRepository.findAll();
     }
 
-    public Category create(CategoryForm categoryForm){
-        Category category = new Category();
-        category.setName(categoryForm.getName());
-        category.setImage(categoryForm.getImage());
-        return categoryRepository.save(category);
+    public Category create(Category category) {
+        Category savedCategory = this.categoryRepository.save(category);
+        wsSender.accept(EventType.CREATE, savedCategory);
+        return savedCategory;
     }
 
-    public Category update(Category oldCategory, CategoryForm category){
-        oldCategory.setName(category.getName());
-        oldCategory.setImage(category.getImage());
-        return categoryRepository.save(oldCategory);
+    public Category update(Category old, Category category) {
+        Category updatedCategory = this.categoryRepository.save(copyProperties(old, category));
+        wsSender.accept(EventType.UPDATE, updatedCategory);
+        return updatedCategory;
     }
 
     public void delete(Category category){
-        categoryRepository.delete(category);
+        this.categoryRepository.delete(category);
+        wsSender.accept(EventType.REMOVE, category);
     }
 
-    public CategoryForm getDetails(Category category){
-        CategoryForm c = new CategoryForm();
-        c.setId(category.getId());
-        c.setName(category.getName());
-        c.setImage(category.getImage());
-        return c;
+    private Category copyProperties(Category old, Category category){
+        old.setName(category.getName());
+        old.setImage(category.getImage());
+        return old;
     }
 
-    public CategoryForm createDetails(CategoryForm category){
-        return getDetails(create(category));
-    }
-
-    public CategoryForm updateDetails(Category oldCategory, CategoryForm category){
-        return getDetails(update(oldCategory, category));
-    }
-
-    public List<CategoryForm> findAllDetails(){
-        List<CategoryForm> forms = new ArrayList<>();
-        for (Category category: findAll()) {
-            forms.add(getDetails(category));
-        }
-        return forms;
-    }
-
-    public Category get(Long id){
-        return categoryRepository.getById(id);
-    }
-
-    public boolean exist(Long id) {
-        return categoryRepository.existsById(id);
-    }
 }

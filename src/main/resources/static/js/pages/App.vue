@@ -2,49 +2,82 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title>Pinemelon</v-toolbar-title>
+      <v-btn flat
+             v-if="profile"
+             :disabled="$route.path === '/'"
+             @click="showCategories"
+      >
+        Categories
+      </v-btn>
+      <v-btn flat
+             v-if="profile"
+             :disabled="$route.path === '/products'"
+             @click="showProducts"
+      >
+        Products
+      </v-btn>
       <v-spacer></v-spacer>
-      <span v-if="profile">{{ profile.username }}</span>
+      <v-btn flat
+             v-if="profile"
+             :disabled="$route.path === '/profile'"
+             @click="showProfile"
+      >
+        {{ profile.username }}
+      </v-btn>
       <v-btn v-if="profile" icon href="/logout">
         <v-icon>logout</v-icon>
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container v-if="!profile">You have to sign in via
-        <a href="/login">Google</a>
-      </v-container>
-<!--      <v-container v-if="profile">-->
-<!--        <category-list :categories="categories"/>-->
-<!--      </v-container>-->
-      <v-container v-if="profile">
-        <product-list/>
-      </v-container>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
   import { mapState, mapMutations } from 'vuex'
-  import ProductList from "components/product/ProductList.vue";
   import { addHandler } from "util/ws";
 
   export default {
-    components: {
-      ProductList
-    },
     computed: mapState(['profile']),
-    methods: mapMutations(['addProductMutation', 'updateProductMutation', 'removeProductMutation']),
+    methods: {
+      ...mapMutations(['addProductMutation', 'updateProductMutation', 'removeProductMutation']),
+      showProducts(){
+        this.$router.push('/products')
+      },
+      showProfile(){
+        this.$router.push('/profile')
+      },
+      showCategories(){
+        this.$router.push('/categories')
+      },
+    },
     created() {
       addHandler(data => {
         if (data.objectType === 'PRODUCT'){
           switch (data.eventType){
             case 'CREATE':
-              this.addProductMutation(data.body)
+              // this.addProductMutation(data.body)
               break
             case 'UPDATE':
-              this.updateProductMutation(data.body)
+              // this.updateProductMutation(data.body)
               break
             case 'REMOVE':
-              this.removeProductMutation(data.body)
+              // this.removeProductMutation(data.body)
+              break
+            default:
+              console.error(`Looks like the event type is unknown "${data.eventType}"`)
+          }
+        } else if(data.objectType === 'CATEGORY') {
+          switch (data.eventType) {
+            case 'CREATE':
+              // this.addProductMutation(data.body)
+              break
+            case 'UPDATE':
+              // this.updateProductMutation(data.body)
+              break
+            case 'REMOVE':
+              // this.removeProductMutation(data.body)
               break
             default:
               console.error(`Looks like the event type is unknown "${data.eventType}"`)
@@ -53,6 +86,11 @@
           console.error(`Looks like the event type is unknown "${data.objectType}"`)
         }
       })
+    },
+    beforeMount() {
+      if (!this.profile){
+        this.$router.replace('/auth')
+      }
     }
   }
 </script>

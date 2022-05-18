@@ -23,10 +23,10 @@ public class WsSender {
         this.mapper = mapper;
     }
 
-    public <T> BiConsumer<EventType, T> getSender(ObjectType objectType){
+    public <T> BiConsumer<EventType, T> getSender(ObjectType objectType, Class view){
         ObjectWriter writer = mapper
                 .setConfig(mapper.getSerializationConfig())
-                .writer();
+                .writerWithView(view);
 
         return  (EventType eventType, T payload) -> {
             String value = null;

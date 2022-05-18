@@ -1,6 +1,11 @@
 package kz.pine.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import kz.pine.domain.User;
+import kz.pine.domain.Views;
 import kz.pine.services.CategoryService;
 import kz.pine.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +21,18 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    @Autowired
+    private final ObjectWriter writer;
     private CategoryService categoryService;
-    @Autowired
     private ProductService productService;
+
+    @Autowired
+    public MainController(CategoryService categoryService, ProductService productService, ObjectMapper mapper) {
+        this.categoryService = categoryService;
+        this.productService = productService;
+        this.writer = mapper
+                .setConfig(mapper.getSerializationConfig())
+                .writerWithView(Views.FullCategoryInfo.class);
+    }
 
     @Value("${spring.profiles.active}")
     private String profile;
@@ -28,12 +41,14 @@ public class MainController {
     public String main(
             Model model,
             @AuthenticationPrincipal User user
-    ) {
+    ) throws JsonProcessingException {
         HashMap<Object, Object> data = new HashMap<>();
         if (user != null) {
             data.put("profile", user);
-            data.put("categories", categoryService.findAllDetails());
-            data.put("products", productService.findAllForm(null));
+            String categories = writer.writeValueAsString(categoryService.findAll());
+            String products = writer.writeValueAsString(productService.findAll(null));
+            model.addAttribute("categories", categories);
+            model.addAttribute("products", products);
         }
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", "dev".equals(profile));
