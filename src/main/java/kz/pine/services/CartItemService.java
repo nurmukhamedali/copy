@@ -28,8 +28,8 @@ public class CartItemService {
         return itemRepository.save(old);
     }
 
-    public void deleteByProduct(Product product){
-        CartItem item = itemRepository.findAllBy
+    public void deleteByProduct(Product product, User user){
+        CartItem item = itemRepository.findByCartAndProduct(user.getCart(), product);
         itemRepository.delete(item);
     }
 

@@ -2,37 +2,24 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title>Pinemelon</v-toolbar-title>
-      <v-btn flat
-             v-if="profile"
-             :disabled="$route.path === '/'"
-             @click="showCategories"
-      >
+      <!--Categories-->
+      <v-btn flat round v-if="profile" :disabled="$route.path === '/'" @click="showCategories">
         Categories
       </v-btn>
-      <v-btn flat
-             v-if="profile"
-             :disabled="$route.path === '/products'"
-             @click="showProducts"
-      >
+      <!--Products-->
+      <v-btn flat round v-if="profile" :disabled="$route.path === '/products'" @click="showProducts">
         Products
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn flat
-             icon
-             v-if="profile"
-             :disabled="$route.path === '/cart'"
-             @click="showCart"
-      >
+      <!--Cart-->
+      <v-btn flat icon v-if="profile" :disabled="$route.path === '/cart'" @click="showCart">
         <v-icon>shopping_cart</v-icon>
       </v-btn>
-      <v-btn flat
-             v-if="profile"
-             :disabled="$route.path === '/profile'"
-             @click="showProfile"
-      >
-        <v-list-tile-avatar>
+      <!--Profile-->
+      <v-btn flat round v-if="profile" :disabled="$route.path === '/profile'" @click="showProfile" class="text-lowercase">
+        <v-avatar size="36" class="ma-2">
           <v-img :src="profile.avatar" round></v-img>
-        </v-list-tile-avatar>
+        </v-avatar>
         <div class="hidden-sm-and-down">
           {{ profile.username }}
         </div>

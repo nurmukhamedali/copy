@@ -32,8 +32,11 @@ public class CartItemController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Product product){
-        itemService.deleteByProduct(product);
+    public void delete(
+            @PathVariable("id") Product product,
+            @AuthenticationPrincipal User user
+    ){
+        itemService.deleteByProduct(product, user);
     }
 
 }
