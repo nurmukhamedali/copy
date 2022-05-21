@@ -28,16 +28,16 @@ public class CartItem implements Serializable {
     @JsonView(Views.FullCartItemInfo.class)
     private Product product;
 
-    @MapsId("userId")
+    @MapsId("cartId")
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name="cart_id", referencedColumnName = "id")
     @JsonView(Views.FullCartItemInfo.class)
-    private User user;
+    private Cart cart;
 
-    public CartItem(User user, Product product, int quantity) {
-        this.user = user;
+    public CartItem(Cart cart, Product product, int quantity) {
+        this.cart = cart;
         this.product = product;
         this.quantity = quantity;
-        this.id = new CartItemId(user.getId(), product.getId());
+        this.id = new CartItemId(cart.getId(), product.getId());
     }
 }

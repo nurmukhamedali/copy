@@ -1,8 +1,6 @@
 package kz.pine.services;
 
-import kz.pine.domain.CartItem;
-import kz.pine.domain.CartItemId;
-import kz.pine.domain.User;
+import kz.pine.domain.*;
 import kz.pine.repositories.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,26 +19,26 @@ public class CartItemService {
     }
 
     public CartItem addToCart(CartItem form, User user){
-        CartItem old = this.itemRepository.findByUserAndProduct(user, form.getProduct());
+        CartItem old = this.itemRepository.findByCartAndProduct(user.getCart(), form.getProduct());
         if (old == null)
-            old = new CartItem(user, form.getProduct(), form.getQuantity());
+            old = new CartItem(user.getCart(), form.getProduct(), form.getQuantity());
         else{
             old.setQuantity(form.getQuantity() + old.getQuantity());
         }
         return itemRepository.save(old);
     }
 
-    private CartItem getById(CartItemId id){
-        return itemRepository.getById(id);
+    public void deleteByProduct(Product product){
+        CartItem item = itemRepository.findAllBy
+        itemRepository.delete(item);
     }
-
 
     public List<CartItem> findAllByUser(User user){
-        return itemRepository.findAllByUser(user);
+        return itemRepository.findAllByCart(user.getCart());
     }
 
-    public void delete(CartItem item){
-        itemRepository.delete(item);
+    public List<CartItem> findAllByCart(Cart cart) {
+        return itemRepository.findAllByCart(cart);
     }
 }
 

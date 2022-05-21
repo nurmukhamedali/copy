@@ -11,12 +11,13 @@ export default new Vuex.Store({
         products,
         categories,
         profile,
-        cart
+        cart,
+        items
     },
     getters: {
         sortedProducts: state => (state.products || []).sort((a, b) => -(a.id - b.id)),
         sortedCategories: state => (state.categories || []).sort((a, b) => -(a.id - b.id)),
-        sortedCart: state => (state.cart || []).sort((a, b) => -(a.id - b.id))
+        sortedCart: state => (state.items || []).sort((a, b) => -(a.product.id - b.product.id))
     },
     mutations: {
         // Product
@@ -73,27 +74,27 @@ export default new Vuex.Store({
         },
         // Cart Item
         addCartItemMutation(state, cartItem){
-            state.cart = [
-                ...state.cart,
+            state.items = [
+                ...state.items,
                 cartItem
             ]
         },
         updateCartItemMutation(state, cartItem){
-            const updateIndex = state.cart.findIndex(item => (item.product.id === cartItem.product.id && item.user.id === cartItem.user.id))
+            const updateIndex = state.items.findIndex(item => (item.product.id === cartItem.product.id))
 
-            state.cart = [
-                ...state.cart.slice(0, updateIndex),
+            state.items = [
+                ...state.items.slice(0, updateIndex),
                 cartItem,
-                ...state.cart.slice(updateIndex + 1)
+                ...state.items.slice(updateIndex + 1)
             ]
         },
         removeCartItemMutation(state, cartItem){
-            const deletionIndex = state.categories.findIndex(item => item.id === cartItem.id)
+            const deletionIndex = state.items.findIndex(item => item.product.id === cartItem.product.id)
 
             if (deletionIndex > -1){
-                state.cart = [
-                    ...state.cart.slice(0, deletionIndex),
-                    ...state.cart.slice(deletionIndex + 1)
+                state.items = [
+                    ...state.items.slice(0, deletionIndex),
+                    ...state.items.slice(deletionIndex + 1)
                 ]
             }
         }
@@ -149,7 +150,7 @@ export default new Vuex.Store({
         async addCartItemAction({commit, state}, cartItem){
             const result = await cartItemApi.add(cartItem)
             const data = await result.json()
-            const index = state.cart.findIndex(item => (item.product.id === data.product.id && item.product.id === data.product.id));
+            const index = state.items.findIndex(item => (item.product.id === data.product.id && item.cart.id === data.cart.id));
             if (index > -1){
                 commit('updateCartItemMutation', data)
             } else {

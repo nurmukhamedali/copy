@@ -31,23 +31,22 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: "CartItemCard",
   props: ['item', 'addItem'],
+  computed: mapState(['cart']),
   methods: {
     ...mapActions(['removeCartItemAction', 'addCartItemAction']),
     add() {
       this.addCartItemAction({
         product: this.item.product,
-        user: this.item.user,
         quantity: 1
       })
     },
     subtract(){
       this.addCartItemAction({
         product: this.item.product,
-        user: this.item.user,
         quantity: -1
       })
     },

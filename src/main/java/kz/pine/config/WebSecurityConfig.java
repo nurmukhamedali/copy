@@ -1,6 +1,8 @@
 package kz.pine.config;
 
+import kz.pine.domain.Cart;
 import kz.pine.domain.User;
+import kz.pine.repositories.CartRepository;
 import kz.pine.repositories.CustomerRepository;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
@@ -27,19 +29,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor(CustomerRepository customerRepository){
+    public PrincipalExtractor principalExtractor(CustomerRepository customerRepository, CartRepository cartRepository){
         return map -> {
             String id = (String) map.get("sub");
             User user = customerRepository.findById(id).orElseGet(() -> {
                 User nuser = new User();
-
                 nuser.setId(id);
                 nuser.setUsername((String) map.get("email"));
                 nuser.setName((String) map.get("name"));
                 nuser.setAvatar((String) map.get("picture"));
+                Cart cart = cartRepository.save(new Cart());
+                nuser.setCart(cart);
                 return nuser;
             });
-            return customerRepository.save(user);
+            User nuser = customerRepository.save(user);
+            return nuser;
         };
     }
 }

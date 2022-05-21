@@ -1,17 +1,13 @@
 package kz.pine.domain;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "userp")
@@ -34,21 +30,8 @@ public class User implements Serializable {
     @JsonView(Views.FullProfileInfo.class)
     private String avatar;
 
-//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-//    @Enumerated(EnumType.STRING)
-//    @JsonView(Views.FullProfileInfo.class)
-//    private Set<Role> roles;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<CartItem> items;
-
-    public User(String id, String username, String name, String address, String avatar) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.address = address;
-        this.avatar = avatar;
-    }
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    @JsonView(Views.FullProfileInfo.class)
+    private Cart cart;
 }

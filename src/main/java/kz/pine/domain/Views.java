@@ -11,6 +11,8 @@ public class Views {
 
     public interface FullProfileInfo extends ShortInfo {}
 
+    public interface FullCartInfo extends ShortInfo {}
+
     public interface FullCartItemInfo extends ShortInfo {}
 }
 

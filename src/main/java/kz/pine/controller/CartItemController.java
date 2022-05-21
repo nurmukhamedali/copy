@@ -2,6 +2,7 @@ package kz.pine.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import kz.pine.domain.CartItem;
+import kz.pine.domain.Product;
 import kz.pine.domain.User;
 import kz.pine.domain.Views;
 import kz.pine.services.CartItemService;
@@ -31,8 +32,8 @@ public class CartItemController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") CartItem item){
-        itemService.delete(item);
+    public void delete(@PathVariable("id") Product product){
+        itemService.deleteByProduct(product);
     }
 
 }

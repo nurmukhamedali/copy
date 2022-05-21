@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CartItemId implements Serializable {
     @JsonView(Views.Id.class)
-    private String userId;
+    private Long cartId;
     @JsonView(Views.Id.class)
     private Long productId;
 }
