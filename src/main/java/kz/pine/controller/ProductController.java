@@ -36,6 +36,7 @@ public class ProductController {
     @PostMapping("/products")
     @JsonView(Views.FullProductInfo.class)
     public Product create(@RequestBody Product product) {
+
         return productService.create(product);
     }
 

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import productApi from "api/products";
 import categoryApi from "api/categories";
+import cartItemApi from "api/cartItems";
 
 Vue.use(Vuex)
 
@@ -9,11 +10,13 @@ export default new Vuex.Store({
     state: {
         products,
         categories,
-        profile: frontendData.profile
+        profile,
+        cart
     },
     getters: {
         sortedProducts: state => (state.products || []).sort((a, b) => -(a.id - b.id)),
-        sortedCategories: state => (state.categories || []).sort((a, b) => -(a.id - b.id))
+        sortedCategories: state => (state.categories || []).sort((a, b) => -(a.id - b.id)),
+        sortedCart: state => (state.cart || []).sort((a, b) => -(a.id - b.id))
     },
     mutations: {
         // Product
@@ -67,6 +70,32 @@ export default new Vuex.Store({
                     ...state.categories.slice(deletionIndex + 1)
                 ]
             }
+        },
+        // Cart Item
+        addCartItemMutation(state, cartItem){
+            state.cart = [
+                ...state.cart,
+                cartItem
+            ]
+        },
+        updateCartItemMutation(state, cartItem){
+            const updateIndex = state.cart.findIndex(item => (item.product.id === cartItem.product.id && item.user.id === cartItem.user.id))
+
+            state.cart = [
+                ...state.cart.slice(0, updateIndex),
+                cartItem,
+                ...state.cart.slice(updateIndex + 1)
+            ]
+        },
+        removeCartItemMutation(state, cartItem){
+            const deletionIndex = state.categories.findIndex(item => item.id === cartItem.id)
+
+            if (deletionIndex > -1){
+                state.cart = [
+                    ...state.cart.slice(0, deletionIndex),
+                    ...state.cart.slice(deletionIndex + 1)
+                ]
+            }
         }
     },
     actions: {
@@ -114,6 +143,28 @@ export default new Vuex.Store({
             const result = await categoryApi.remove(category.id)
             if (result.ok){
                 commit('removeCategoryMutation', category)
+            }
+        },
+        // Cart Item
+        async addCartItemAction({commit, state}, cartItem){
+            const result = await cartItemApi.add(cartItem)
+            const data = await result.json()
+            const index = state.cart.findIndex(item => (item.product.id === data.product.id && item.product.id === data.product.id));
+            if (index > -1){
+                commit('updateCartItemMutation', data)
+            } else {
+                commit('addCartItemMutation', data)
+            }
+        },
+        async updateCartItemAction({commit}, cartItem){
+            const result = await cartItemApi.update(cartItem)
+            const data = await result.json()
+            commit('updateCartItemMutation', data)
+        },
+        async removeCartItemAction({commit}, cartItem){
+            const result = await cartItemApi.remove(cartItem.product.id)
+            if (result.ok){
+                commit('removeCartItemMutation', cartItem)
             }
         },
     }

@@ -18,11 +18,24 @@
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn flat
+             icon
+             v-if="profile"
+             :disabled="$route.path === '/cart'"
+             @click="showCart"
+      >
+        <v-icon>shopping_cart</v-icon>
+      </v-btn>
+      <v-btn flat
              v-if="profile"
              :disabled="$route.path === '/profile'"
              @click="showProfile"
       >
-        {{ profile.username }}
+        <v-list-tile-avatar>
+          <v-img :src="profile.avatar" round></v-img>
+        </v-list-tile-avatar>
+        <div class="hidden-sm-and-down">
+          {{ profile.username }}
+        </div>
       </v-btn>
       <v-btn v-if="profile" icon href="/logout">
         <v-icon>logout</v-icon>
@@ -51,6 +64,9 @@
       showCategories(){
         this.$router.push('/categories')
       },
+      showCart(){
+        this.$router.push('/cart')
+      }
     },
     created() {
       addHandler(data => {

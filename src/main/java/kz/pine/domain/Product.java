@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "a_product")
 @Data
 @ToString(of = {"id", "name", "image", "brand", "price"})
 public class Product {

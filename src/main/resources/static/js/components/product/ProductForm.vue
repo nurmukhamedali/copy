@@ -23,10 +23,10 @@
     <v-select
         :items="sortedCategories"
         v-model="category"
-        name="category"
         item-text="name"
-        return-object
+        menu-props="auto"
         label="Select a category"
+        return-object
     ></v-select>
     <v-btn class="ma-2" @click="post">
       Add
@@ -48,7 +48,7 @@ export default {
       brand: '',
       image: '',
       price: '',
-      category: {id: 9}
+      category: {}
     }
   },
   watch: {
@@ -84,6 +84,7 @@ export default {
       this.image = ''
       this.brand = ''
       this.price = ''
+      this.category = {}
     }
   }
 }

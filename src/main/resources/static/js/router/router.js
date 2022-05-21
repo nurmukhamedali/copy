@@ -4,6 +4,7 @@ import Auth from "pages/Auth.vue";
 import Profile from "pages/Profile.vue";
 import ProductList from "pages/ProductList.vue";
 import CategoryList from "pages/CategoryList.vue";
+import CartItemList from "pages/CartItemList.vue";
 
 Vue.use(VueRouter)
 
@@ -12,6 +13,7 @@ const routes = [
     { path: '/products', component: ProductList },
     { path: '/auth', component: Auth },
     { path: '/profile', component: Profile },
+    { path: '/cart', component: CartItemList},
     { path: '*', component: CategoryList }
 ]
 

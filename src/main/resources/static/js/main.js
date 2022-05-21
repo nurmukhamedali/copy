@@ -10,7 +10,7 @@ import App from 'pages/App.vue'
 import store from "store/store";
 import { connect } from "./util/ws";
 
-if (frontendData.profile){
+if (profile){
     connect() // производим подключение к веб-сокету
 }
 

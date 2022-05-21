@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-layout align-start justify-space-around row reverse wrap>
-      <v-flex d-flex xs12 sm5 md3>
-        <product-form :productAttr="product"/>
+      <v-flex d-flex xs12 sm4 md3>
+          <product-form :productAttr="product"/>
       </v-flex>
-      <v-flex d-flex xs12 sm7 md9>
+      <v-flex d-flex xs12 sm8 md9>
         <v-layout align-start justify-start row wrap>
           <product-card v-for="product in sortedProducts"
                         :key="product.id"
@@ -20,10 +20,12 @@
 import { mapGetters } from 'vuex'
 import ProductCard from "components/product/ProductCard.vue";
 import ProductForm from "components/product/ProductForm.vue";
+import CartItemList from "./CartItemList.vue";
 
 export default {
   name: "ProductList",
   components: {
+    CartItemList,
     ProductCard,
     ProductForm
   },

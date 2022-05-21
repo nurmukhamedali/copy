@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "a_category")
 @Data
 @ToString(of = {"id", "name", "image"})
 public class Category {
@@ -17,9 +17,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Views.Id.class)
     private Long id;
-    @JsonView(Views.FullCategoryInfo.class)
+    @JsonView(Views.ShortInfo.class)
     private String name;
-    @JsonView(Views.FullCategoryInfo.class)
+    @JsonView(Views.ShortInfo.class)
     private String image;
 
     @OneToMany(mappedBy = "category", orphanRemoval = true)
