@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <v-card class="ma-2 v-btn--round border-1">
+    <v-card-text class="d-flex justify-center">New Product</v-card-text>
+
     <v-text-field class="ma-2"
                   label="Name"
                   placeholder="Enter product name"
@@ -21,24 +23,27 @@
                   v-model="image"
     />
     <v-select
+        class="mx-2 pa-0"
         :items="sortedCategories"
         v-model="category"
         item-text="name"
         menu-props="auto"
-        label="Select a category"
+        placeholder="Select a category"
         return-object
     ></v-select>
-    <v-btn class="ma-2" @click="post">
-      Add
-    </v-btn>
-  </div>
+    <v-card-actions class="pt-0">
+      <v-btn class="ma-2 d-flex"color="success" block @click="post" round depressed>
+        Add
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "ProductForm",
+  name: "DevProductForm",
   props: ['productAttr'],
   computed: mapGetters(['sortedCategories']),
   data(){

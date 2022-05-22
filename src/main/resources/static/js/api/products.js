@@ -6,4 +6,5 @@ export default {
     add: product => products.save({}, product),
     update: product => products.update({id: product.id}, product),
     remove: id => products.remove({id}),
+    page: page => Vue.http.get('/admin/products', {params: { page }})
 }

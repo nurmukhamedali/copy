@@ -4,16 +4,20 @@ import com.fasterxml.jackson.annotation.JsonView;
 import kz.pine.domain.Category;
 import kz.pine.domain.Product;
 import kz.pine.domain.Views;
+import kz.pine.dto.ProductPageDto;
 import kz.pine.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("admin")
 @CrossOrigin(origins="*")
 public class ProductController {
+    public static final int PRODUCTS_PER_PAGE = 12;
+
     private ProductService productService;
 
     @Autowired
@@ -23,8 +27,11 @@ public class ProductController {
 
     @GetMapping("/products")
     @JsonView(Views.FullProductInfo.class)
-    public List<Product> getAll(@RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category) {
-        return productService.findAll(category);
+    public ProductPageDto getAll(
+            @PageableDefault(size = PRODUCTS_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
+//            @RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category
+    ) {
+        return productService.findAll(pageable);
     }
 
     @GetMapping("/products/{id}")

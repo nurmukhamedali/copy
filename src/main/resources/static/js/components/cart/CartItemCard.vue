@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-2">
+  <v-card>
     <v-layout>
       <div class="d-flex align-center">
         <v-avatar tile color="" size="88">

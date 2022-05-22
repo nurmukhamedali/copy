@@ -11,6 +11,9 @@
           <v-flex>{{ profile.address }}</v-flex>
         </v-layout>
       </v-flex>
+<!--      <v-btn v-if="profile" icon href="/logout">-->
+<!--        <v-icon>logout</v-icon>-->
+<!--      </v-btn>-->
     </v-layout>
   </v-container>
 </template>

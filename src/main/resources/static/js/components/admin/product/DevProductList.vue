@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-layout align-start justify-space-around row reverse wrap>
-      <v-flex class="hidden-sm-and-down" md3>
-        <cart-item-short-list></cart-item-short-list>
+      <v-flex d-flex xs12 sm4 md3>
+          <dev-product-form :productAttr="product"/>
       </v-flex>
       <v-flex xs12 sm8 md9>
         <v-layout justify-center>
@@ -13,9 +13,10 @@
           ></v-pagination>
         </v-layout>
         <v-layout align-start justify-start row wrap>
-          <product-card v-for="product in sortedProducts"
+          <dev-product-card v-for="product in sortedProducts"
                         :key="product.id"
-                        :product="product"/>
+                        :product="product"
+                        :editProduct="editProduct"/>
         </v-layout>
         <v-layout justify-center>
           <v-pagination
@@ -31,17 +32,18 @@
 
 <script>
 import {mapActions, mapGetters, mapState} from 'vuex'
-import ProductCard from "components/product/ProductCard.vue";
-import CartItemShortList from "components/cart/CartItemShortList.vue";
+import DevProductCard from "components/admin/product/DevProductCard.vue";
+import DevProductForm from "components/admin/product/DevProductForm.vue";
 
 export default {
-  name: "ProductList",
+  name: "DevProductList",
   components: {
-    CartItemShortList,
-    ProductCard,
+    DevProductCard,
+    DevProductForm
   },
   data() {
     return {
+      product: null,
       page: 1
     }
   },
@@ -55,6 +57,9 @@ export default {
   },
   methods: {
     ...mapActions(['loadPageAction']),
+    editProduct(product) {
+      this.product = product;
+    },
     load(){
       this.loadPageAction(this.page - 1)
     }

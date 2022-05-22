@@ -18,11 +18,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import CategoryCard from "components/category/CategoryCard.vue";
-import CategoryForm from "components/category/CategoryForm.vue";
+import CategoryCard from "components/admin/category/DevCategoryCard.vue";
+import CategoryForm from "components/admin/category/DevCategoryForm.vue";
 
 export default {
-  name: "CategoryList",
+  name: "DevCategoryList",
   components: {
     CategoryCard,
     CategoryForm

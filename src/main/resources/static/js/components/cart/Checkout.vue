@@ -1,15 +1,8 @@
 <template>
-  <v-card class="ma-2">
-    <v-card-actions>
-      <v-layout justify-center class="ma-2">
-        <v-btn round depressed color="info">Order Items</v-btn>
-      </v-layout>
-    </v-card-actions>
-    <v-divider></v-divider>
+  <div>
     <v-card-text>
-      <div color="grey">({{ cart.totalItems }} items)</div>
       <v-layout align-start>
-        <span>Subtotal</span>&nbsp;
+        <span>Subtotal</span>&nbsp;<span color="grey">({{ cart.totalItems }} items)</span>
         <v-spacer></v-spacer>
         <div>${{ parseFloat(cart.totalPrice).toFixed(2) }}</div>
       </v-layout>
@@ -27,7 +20,10 @@
         <h4>$ {{ parseFloat(cart.totalPrice + 2).toFixed(2) }}</h4>
       </v-layout>
     </v-card-text>
-  </v-card>
+  <v-layout justify-center class="ma-2">
+    <v-btn round depressed block color="success">Checkout</v-btn>
+  </v-layout>
+  </div>
 </template>
 
 <script>

@@ -20,8 +20,8 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "CategoryForm",
-  props: ['categoryAttr'],
+  name: "DevCategoryForm",
+  props: ['categoryAttr', 'editor'],
   data(){
     return {
       id: null,
@@ -54,6 +54,7 @@ export default {
       this.id = ''
       this.name = ''
       this.image = ''
+
     }
   }
 }

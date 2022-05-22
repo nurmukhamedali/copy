@@ -12,7 +12,9 @@ export default new Vuex.Store({
         categories,
         profile,
         cart,
-        items
+        items,
+        totalPages: frontendData.totalPages,
+        currentPage: frontendData.currentPage
     },
     getters: {
         sortedProducts: state => (state.products || []).sort((a, b) => -(a.id - b.id)),
@@ -121,7 +123,17 @@ export default new Vuex.Store({
                     return fItem + sAmount;
                 }, 0)
             }
-        }
+        },
+        updateProductPageMutation(state, products){
+            state.products = products
+        },
+        updateTotalPagesMutation(state, totalPages){
+            state.totalPages = totalPages;
+        },
+        updateCurrentPageMutation(state, currentPage){
+            state.currentPage = currentPage;
+        },
+
     },
     actions: {
         // Product
@@ -192,5 +204,12 @@ export default new Vuex.Store({
                 commit('removeCartItemMutation', cartItem)
             }
         },
+        async loadPageAction({commit, state}, page){
+            const result = await productApi.page(page)
+            const data = await result.json()
+            commit('updateProductPageMutation', data.products)
+            commit('updateTotalPagesMutation', data.totalPages)
+            commit('updateCurrentPageMutation', Math.min(data.currentPage, data.totalPages))
+        }
     }
 })

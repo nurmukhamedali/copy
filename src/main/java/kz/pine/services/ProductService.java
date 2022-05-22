@@ -5,13 +5,14 @@ import kz.pine.domain.Product;
 import kz.pine.domain.Views;
 import kz.pine.dto.EventType;
 import kz.pine.dto.ObjectType;
+import kz.pine.dto.ProductPageDto;
 import kz.pine.repositories.ProductRepository;
 import kz.pine.util.WsSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 @Service
@@ -25,8 +26,13 @@ public class ProductService {
         this.wsSender = wsSender.getSender(ObjectType.PRODUCT, Views.FullProductInfo.class);
     }
 
-    public List<Product> findAll(Category category){
-        return productRepository.findAll();
+    public ProductPageDto findAll(Pageable pageable){
+        Page<Product> page = productRepository.findAll(pageable);
+        return new ProductPageDto(
+                page.getContent(),
+                pageable.getPageNumber(),
+                page.getTotalPages()
+        );
     }
 
     public Product create(Product product) {

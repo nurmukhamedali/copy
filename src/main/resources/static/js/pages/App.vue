@@ -1,20 +1,13 @@
 <template>
   <v-app>
     <v-toolbar app>
-      <v-toolbar-title>Pinemelon</v-toolbar-title>
-      <!--Categories-->
-      <v-btn flat round v-if="profile" :disabled="$route.path === '/'" @click="showCategories">
-        Categories
-      </v-btn>
-      <!--Products-->
-      <v-btn flat round v-if="profile" :disabled="$route.path === '/products'" @click="showProducts">
-        Products
+      <v-toolbar-title v-if="profile" :disabled="$route.path === '/'" @click="showMain" style="cursor: pointer">
+        Pinemelon
+      </v-toolbar-title>
+      <v-btn icon v-if="profile" :disabled="$route.path === '/dev'" @click="showDevMenu">
+        <v-icon>settings</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <!--Cart-->
-      <v-btn flat icon v-if="profile" :disabled="$route.path === '/cart'" @click="showCart">
-        <v-icon>shopping_cart</v-icon>
-      </v-btn>
       <!--Profile-->
       <v-btn flat round v-if="profile" :disabled="$route.path === '/profile'" @click="showProfile" class="text-lowercase">
         <v-avatar size="36" class="ma-2">
@@ -24,8 +17,11 @@
           {{ profile.username }}
         </div>
       </v-btn>
-      <v-btn v-if="profile" icon href="/logout">
-        <v-icon>logout</v-icon>
+      <!--Cart-->
+      <v-btn depressed round color="success" class=""
+             v-if="profile" :disabled="$route.path === '/cart'" @click="showCart">
+        <v-icon class="ma-0">shopping_cart</v-icon>
+        <span>{{ cart.totalItems }}</span>
       </v-btn>
     </v-toolbar>
     <v-content>
@@ -39,20 +35,20 @@
   import { addHandler } from "util/ws";
 
   export default {
-    computed: mapState(['profile']),
+    computed: mapState(['profile', 'cart']),
     methods: {
       ...mapMutations(['addProductMutation', 'updateProductMutation', 'removeProductMutation']),
-      showProducts(){
-        this.$router.push('/products')
-      },
       showProfile(){
         this.$router.push('/profile')
       },
-      showCategories(){
-        this.$router.push('/categories')
-      },
       showCart(){
         this.$router.push('/cart')
+      },
+      showMain(){
+        this.$router.push('/')
+      },
+      showDevMenu(){
+        this.$router.push('/dev')
       }
     },
     created() {
