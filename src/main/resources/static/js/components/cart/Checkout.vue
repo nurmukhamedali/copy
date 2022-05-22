@@ -7,41 +7,35 @@
     </v-card-actions>
     <v-divider></v-divider>
     <v-card-text>
-      <v-layout>
-        <v-flex xs9>
-          <span>Subtotal</span>&nbsp;<span color="grey">(7 items)</span>
-        </v-flex>
+      <div color="grey">({{ cart.totalItems }} items)</div>
+      <v-layout align-start>
+        <span>Subtotal</span>&nbsp;
         <v-spacer></v-spacer>
-        <v-flex xs3>
-          <span>$22.5</span>
-        </v-flex>
+        <div>${{ parseFloat(cart.totalPrice).toFixed(2) }}</div>
       </v-layout>
       <v-layout>
-        <v-flex xs9>
-          <span>Delivery</span>
-        </v-flex>
-        <v-flex xs3>
-          <span>$2</span>
-        </v-flex>
+        <span>Delivery</span>
+        <v-spacer></v-spacer>
+        <span>$ 2.00</span>
       </v-layout>
     </v-card-text>
     <v-divider></v-divider>
     <v-card-text>
       <v-layout>
-        <v-flex xs9>
-          <span>Estimated Total</span>
-        </v-flex>
-        <v-flex xs3>
-          <h4>$24.5</h4>
-        </v-flex>
+        <span>Estimated Total</span>
+        <v-spacer></v-spacer>
+        <h4>$ {{ parseFloat(cart.totalPrice + 2).toFixed(2) }}</h4>
       </v-layout>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
-  name: "Checkout"
+  name: "Checkout",
+  computed: mapState(['cart']),
 }
 </script>
 

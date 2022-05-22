@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout>
-      <h3>Your Cart</h3>
+      <h3>Your Cart <span color="grey">({{ cart.totalItems }} items)</span></h3>
     </v-layout>
     <v-layout align-space-around justify-start row wrap>
       <v-flex xs12 sm7 md9>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters, mapState,} from 'vuex'
 import CartItemCard from "components/cart/CartItemCard.vue";
 import Checkout from "components/cart/Checkout.vue";
 
@@ -36,7 +36,10 @@ export default {
       item: null
     }
   },
-  computed: mapGetters(['sortedCart']),
+  computed: {
+    ...mapGetters(['sortedCart']),
+    ...mapState(['cart'])
+  }
 }
 </script>
 

@@ -65,9 +65,6 @@ export default {
     },
     del() {
       this.removeCartItemAction(this.item)
-    },
-    calcTotal(product){
-      return parseInt(product.quantity) * parseFloat(product.price)
     }
   }
 }

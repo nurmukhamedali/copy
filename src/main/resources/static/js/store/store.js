@@ -78,6 +78,14 @@ export default new Vuex.Store({
                 ...state.items,
                 cartItem
             ]
+            state.cart.totalPrice = state.items.reduce((fItem, sItem) => {
+                let sPrice = sItem.quantity * sItem.product.price;
+                return fItem + sPrice;
+            }, 0)
+            state.cart.totalItems = state.items.reduce((fItem, sItem) => {
+                let sAmount = sItem.quantity;
+                return fItem + sAmount;
+            }, 0)
         },
         updateCartItemMutation(state, cartItem){
             const updateIndex = state.items.findIndex(item => (item.product.id === cartItem.product.id))
@@ -87,6 +95,14 @@ export default new Vuex.Store({
                 cartItem,
                 ...state.items.slice(updateIndex + 1)
             ]
+            state.cart.totalPrice = state.items.reduce((fItem, sItem) => {
+                let sPrice = sItem.quantity * sItem.product.price;
+                return fItem + sPrice;
+            }, 0)
+            state.cart.totalItems = state.items.reduce((fItem, sItem) => {
+                let sAmount = sItem.quantity;
+                return fItem + sAmount;
+            }, 0)
         },
         removeCartItemMutation(state, cartItem){
             const deletionIndex = state.items.findIndex(item => item.product.id === cartItem.product.id)
@@ -96,6 +112,14 @@ export default new Vuex.Store({
                     ...state.items.slice(0, deletionIndex),
                     ...state.items.slice(deletionIndex + 1)
                 ]
+                state.cart.totalPrice = state.items.reduce((fItem, sItem) => {
+                    let sPrice = sItem.quantity * sItem.product.price;
+                    return fItem + sPrice;
+                }, 0)
+                state.cart.totalItems = state.items.reduce((fItem, sItem) => {
+                    let sAmount = sItem.quantity;
+                    return fItem + sAmount;
+                }, 0)
             }
         }
     },

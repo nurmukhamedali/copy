@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table
 @Data
-@ToString(of = {"id"})
+@ToString(of = {"id", "totalPrice", "totalP"})
 @NoArgsConstructor
 public class Cart implements Serializable {
     @Id
@@ -24,6 +24,11 @@ public class Cart implements Serializable {
     @OneToOne(mappedBy = "cart", fetch = FetchType.EAGER)
     @JsonView(Views.FullCartInfo.class)
     private User user;
+
+    @JsonView(Views.FullCartInfo.class)
+    private double totalPrice;
+    @JsonView(Views.FullCartInfo.class)
+    private int totalItems;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore

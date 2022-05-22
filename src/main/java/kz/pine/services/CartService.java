@@ -33,12 +33,12 @@ public class CartService {
         Double tPrice = 0.0;
 
         for (CartItem item: cart.getItems()) {
-            tPrice += item.getProduct().getPrice();
+            tPrice += item.getProduct().getPrice() * item.getQuantity();
             tItems += item.getQuantity();
         }
 
-//        cart.setTotalItems(tItems);
-//        cart.setTotalPrice(tPrice);
+        cart.setTotalItems(tItems);
+        cart.setTotalPrice(tPrice);
 
         return cartRepository.save(cart);
     }
