@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(of = {"id"})
 @ToString(of = {"id", "quantity"})
-@NoArgsConstructor
 public class CartItem implements Serializable {
     @EmbeddedId
     @JsonIgnore
@@ -39,5 +38,40 @@ public class CartItem implements Serializable {
         this.product = product;
         this.quantity = quantity;
         this.id = new CartItemId(cart.getId(), product.getId());
+    }
+
+    public CartItem() {
+    }
+
+    public CartItemId getId() {
+        return id;
+    }
+
+    public void setId(CartItemId id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

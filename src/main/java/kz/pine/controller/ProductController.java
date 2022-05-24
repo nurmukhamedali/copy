@@ -28,8 +28,8 @@ public class ProductController {
     @GetMapping("/products")
     @JsonView(Views.FullProductInfo.class)
     public ProductPageDto getAll(
+//            @RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category,
             @PageableDefault(size = PRODUCTS_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
-//            @RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category
     ) {
         return productService.findAll(pageable);
     }

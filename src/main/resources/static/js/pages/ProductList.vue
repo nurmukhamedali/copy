@@ -5,6 +5,9 @@
         <cart-item-short-list></cart-item-short-list>
       </v-flex>
       <v-flex xs12 sm8 md9>
+        <v-layout>
+          <filter-by-category-list></filter-by-category-list>
+        </v-layout>
         <v-layout justify-center>
           <v-pagination
               v-model="page"
@@ -33,12 +36,14 @@
 import {mapActions, mapGetters, mapState} from 'vuex'
 import ProductCard from "components/product/ProductCard.vue";
 import CartItemShortList from "components/cart/CartItemShortList.vue";
+import FilterByCategoryList from "components/category/FilterByCategoryList.vue";
 
 export default {
   name: "ProductList",
   components: {
     CartItemShortList,
     ProductCard,
+    FilterByCategoryList
   },
   data() {
     return {

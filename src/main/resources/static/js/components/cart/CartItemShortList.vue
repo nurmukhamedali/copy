@@ -1,7 +1,7 @@
 <template>
-  <v-card color="grey lighten-4">
+  <v-card color="grey lighten-4" class="ma-2">
     <v-card-title >
-      <h3>Cart <span color="grey">({{ cart.totalItems }} items)</span></h3>
+      <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
     </v-card-title>
     <v-card-text class="py-0">
         <v-layout align-space-around justify-start column reverse>

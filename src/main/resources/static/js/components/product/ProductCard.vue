@@ -56,7 +56,6 @@ export default {
     },
     addToCart(){
       this.addCartItemAction({
-        id: null,
         quantity: 1,
         product: this.product,
         user: this.profile

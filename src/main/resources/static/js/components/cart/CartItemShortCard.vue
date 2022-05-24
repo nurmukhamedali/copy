@@ -40,16 +40,21 @@ export default {
   methods: {
     ...mapActions(['removeCartItemAction', 'addCartItemAction']),
     increment() {
-      this.addCartItemAction({
+      if(this.item.quantity < 100)
+        this.addCartItemAction({
         product: this.item.product,
         quantity: 1
       })
     },
     decrement(){
-      this.addCartItemAction({
-        product: this.item.product,
-        quantity: -1
-      })
+      if(this.item.quantity > 1){
+        this.addCartItemAction({
+          product: this.item.product,
+          quantity: -1
+        })
+      } else {
+        this.del()
+      }
     },
     del() {
       this.removeCartItemAction(this.item)

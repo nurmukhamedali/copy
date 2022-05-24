@@ -10,11 +10,33 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class CartItemId implements Serializable {
     @JsonView(Views.Id.class)
     private Long cartId;
     @JsonView(Views.Id.class)
     private Long productId;
+
+    public Long getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Long cartId) {
+        this.cartId = cartId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public CartItemId(Long cartId, Long productId) {
+        this.cartId = cartId;
+        this.productId = productId;
+    }
+
+    public CartItemId() {
+    }
 }
