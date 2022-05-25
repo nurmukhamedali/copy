@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4" class="ma-2">
+  <v-card color="grey lighten-4">
     <v-card-title >
       <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
     </v-card-title>

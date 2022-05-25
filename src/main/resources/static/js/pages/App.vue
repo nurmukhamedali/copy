@@ -18,7 +18,7 @@
         </div>
       </v-btn>
       <!--Cart-->
-      <v-btn depressed round color="success" class=""
+      <v-btn depressed color="success" class=""
              v-if="profile" :disabled="$route.path === '/cart'" @click="showCart">
         <v-icon class="ma-0">shopping_cart</v-icon>
         <span>{{ cart.totalItems }}</span>
@@ -94,8 +94,8 @@
   }
 </script>
 
-<style>
-.main-app {
-  color: maroon;
+<style scoped>
+.v-btn{
+  min-width: auto;
 }
 </style>

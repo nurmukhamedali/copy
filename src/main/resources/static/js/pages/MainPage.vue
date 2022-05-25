@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-layout align-start justify-space-around row reverse wrap>
-      <v-flex d-flex xs12 sm4 md3>
-          <dev-product-form :productAttr="product"/>
+      <v-flex class="hidden-sm-and-down" md3>
+        <cart-item-short-list></cart-item-short-list>
       </v-flex>
       <v-flex xs12 sm8 md9>
         <v-layout class="categories">
@@ -27,27 +27,27 @@
           ></v-range-slider>
           <v-btn depressed color="success" @click="load">Apply</v-btn>
         </v-layout>
-
-        <v-layout justify-center>
-          <v-pagination
-              v-model="page"
-              :length="totalPages"
-              @input="load"
-          ></v-pagination>
-        </v-layout>
-        <v-layout align-start justify-start row wrap>
-          <dev-product-card v-for="product in sortedProducts"
-                        :key="product.id"
-                        :product="product"
-                        :editProduct="editProduct"/>
-        </v-layout>
-        <v-layout justify-center>
-          <v-pagination
-              v-model="page"
-              :length="totalPages"
-              @input="load"
-          ></v-pagination>
-        </v-layout>
+        <v-container class="products-navigation">
+          <v-layout justify-center>
+            <v-pagination
+                v-model="page"
+                :length="totalPages"
+                @input="load"
+            ></v-pagination>
+          </v-layout>
+          <v-layout align-start justify-start row wrap>
+            <product-card v-for="product in sortedProducts"
+                          :key="product.id"
+                          :product="product"/>
+          </v-layout>
+          <v-layout justify-center>
+            <v-pagination
+                v-model="page"
+                :length="totalPages"
+                @input="load"
+            ></v-pagination>
+          </v-layout>
+        </v-container>
       </v-flex>
     </v-layout>
   </v-container>
@@ -55,27 +55,31 @@
 
 <script>
 import {mapActions, mapGetters, mapState} from 'vuex'
-import DevProductCard from "components/admin/product/DevProductCard.vue";
-import DevProductForm from "components/admin/product/DevProductForm.vue";
+import ProductCard from "components/product/ProductCard.vue";
+import CartItemShortList from "components/cart/CartItemShortList.vue";
 
 export default {
-  name: "DevProductList",
+  name: "MainPage",
   components: {
-    DevProductCard,
-    DevProductForm
+    CartItemShortList,
+    ProductCard,
   },
   data() {
     return {
-      product: null,
-      page: 1,
-      price: [0, 100],
+      page: null,
+      category: {id: null, name: '', image: ''},
       categoryId: null,
-      totalProducts: null,
+      price: [0, 100],
     }
   },
   computed: {
     ...mapGetters(['sortedProducts', 'sortedCategories']),
     ...mapState(['totalPages', 'currentPage'])
+  },
+  watch: {
+    categoryId: function () {
+      // this.load()
+    }
   },
   created() {
     this.page = this.currentPage + 1;
@@ -83,9 +87,6 @@ export default {
   },
   methods: {
     ...mapActions(['loadPageAction']),
-    editProduct(product) {
-      this.product = product;
-    },
     load(){
       this.loadPageAction({
         page: this.page - 1,

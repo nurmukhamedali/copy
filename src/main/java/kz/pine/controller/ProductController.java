@@ -28,10 +28,12 @@ public class ProductController {
     @GetMapping("/products")
     @JsonView(Views.FullProductInfo.class)
     public ProductPageDto getAll(
-//            @RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category,
+            @RequestParam(required = false, value = "categoryId", defaultValue = "0") Category category,
+            @RequestParam(required = false, value = "minPrice", defaultValue = "0") double minPrice,
+            @RequestParam(required = false, value = "maxPrice", defaultValue = "100") double maxPrice,
             @PageableDefault(size = PRODUCTS_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return productService.findAll(pageable);
+        return productService.findAll(pageable, category, minPrice, maxPrice);
     }
 
     @GetMapping("/products/{id}")

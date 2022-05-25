@@ -6,6 +6,7 @@ import kz.pine.domain.Views;
 import kz.pine.dto.EventType;
 import kz.pine.dto.ObjectType;
 import kz.pine.dto.ProductPageDto;
+import kz.pine.repositories.CategoryRepository;
 import kz.pine.repositories.ProductRepository;
 import kz.pine.util.WsSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,24 @@ import java.util.function.BiConsumer;
 @Service
 public class ProductService {
     private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
     private final BiConsumer<EventType, Product> wsSender;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, WsSender wsSender) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, WsSender wsSender) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
         this.wsSender = wsSender.getSender(ObjectType.PRODUCT, Views.FullProductInfo.class);
     }
 
-    public ProductPageDto findAll(Pageable pageable){
-        Page<Product> page = productRepository.findAll(pageable);
+    public ProductPageDto findAll(Pageable pageable, Category category, double minPrice, double maxPrice){
+        Page<Product> page;
+
+        if(category != null && categoryRepository.existsById(category.getId())){
+            page = productRepository.findAllByCategoryAndPriceBetween(category, minPrice, maxPrice, pageable);
+        } else {
+            page = productRepository.findAllByPriceBetween(minPrice, maxPrice, pageable);
+        }
         return new ProductPageDto(
                 page.getContent(),
                 pageable.getPageNumber(),

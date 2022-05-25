@@ -204,8 +204,8 @@ export default new Vuex.Store({
                 commit('removeCartItemMutation', cartItem)
             }
         },
-        async loadPageAction({commit, state}, page){
-            const result = await productApi.page(page)
+        async loadPageAction({commit, state}, params){
+            const result = await productApi.page(params.page, params.categoryId, params.minPrice, params.maxPrice)
             const data = await result.json()
             commit('updateProductPageMutation', data.products)
             commit('updateTotalPagesMutation', data.totalPages)

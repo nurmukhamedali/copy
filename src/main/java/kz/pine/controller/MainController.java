@@ -71,7 +71,7 @@ public class MainController {
 
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
             PageRequest pageRequest = PageRequest.of(0, ProductController.PRODUCTS_PER_PAGE, sort);
-            ProductPageDto productPageDto = productService.findAll(pageRequest);
+            ProductPageDto productPageDto = productService.findAll(pageRequest, null, 0, 100);
 
             String stringProducts = writer.writeValueAsString(productPageDto.getProducts());
 
