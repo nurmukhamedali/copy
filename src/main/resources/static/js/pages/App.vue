@@ -19,7 +19,7 @@
       </v-btn>
       <!--Cart-->
       <v-btn depressed color="success" class=""
-             v-if="profile" :disabled="$route.path === '/cart'" @click="showCart">
+             v-if="profile" :disabled="$route.path === '/checkout'" @click="showCart">
         <v-icon class="ma-0">shopping_cart</v-icon>
         <span>{{ cart.totalItems }}</span>
       </v-btn>
@@ -42,7 +42,7 @@
         this.$router.push('/profile')
       },
       showCart(){
-        this.$router.push('/cart')
+        this.$router.push('/checkout')
       },
       showMain(){
         this.$router.push('/')

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import productApi from "api/products";
 import categoryApi from "api/categories";
 import cartItemApi from "api/cartItems";
+import orderApi from "api/orders";
 
 Vue.use(Vuex)
 
@@ -13,8 +14,10 @@ export default new Vuex.Store({
         profile,
         cart,
         items,
+        orders,
         totalPages: frontendData.totalPages,
-        currentPage: frontendData.currentPage
+        currentPage: frontendData.currentPage,
+        defaultImage: 'https://pinemelon.com/static/platform/frontend/assets/en/banners/store_main.svg'
     },
     getters: {
         sortedProducts: state => (state.products || []).sort((a, b) => -(a.id - b.id)),
@@ -124,6 +127,25 @@ export default new Vuex.Store({
                 }, 0)
             }
         },
+
+        // Order
+        addOrderMutation(state, order){
+            state.orders = [
+                ...state.orders,
+                order
+            ]
+        },
+        updateOrderMutation(state, order){
+            const updateIndex = state.orders.findIndex(item => item.id === order.id)
+
+            state.orders = [
+                ...state.orders.slice(0, updateIndex),
+                order,
+                ...state.orders.slice(updateIndex + 1)
+            ]
+        },
+
+
         updateProductPageMutation(state, products){
             state.products = products
         },
@@ -203,6 +225,17 @@ export default new Vuex.Store({
             if (result.ok){
                 commit('removeCartItemMutation', cartItem)
             }
+        },
+        async addOrderAction({commit, state}, order){
+            const result = await orderApi.add(order)
+            const data = await result.json()
+            const index = state.orders.findIndex(item => (item.id === data.id))
+            if (index > -1){
+                commit('updateOrderMutation', data)
+            } else {
+                commit('addOrderMutation', data)
+            }
+
         },
         async loadPageAction({commit, state}, params){
             const result = await productApi.page(params.page, params.categoryId, params.minPrice, params.maxPrice)

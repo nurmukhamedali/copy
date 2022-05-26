@@ -15,14 +15,21 @@
 <!--        <v-icon>logout</v-icon>-->
 <!--      </v-btn>-->
     </v-layout>
+    <v-layout>
+      <order-list></order-list>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import OrderList from "components/order/OrderList.vue";
 
 export default {
   name: "Profile",
+  components: {
+    OrderList
+  },
   computed: mapState(['profile'])
 }
 </script>

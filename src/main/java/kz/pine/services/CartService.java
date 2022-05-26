@@ -2,22 +2,21 @@ package kz.pine.services;
 
 import kz.pine.domain.Cart;
 import kz.pine.domain.CartItem;
-import kz.pine.domain.CartItemId;
 import kz.pine.domain.User;
 import kz.pine.repositories.CartItemRepository;
 import kz.pine.repositories.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CartService {
     private final CartRepository cartRepository;
+    private final CartItemRepository itemRepository;
 
     @Autowired
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, CartItemRepository itemRepository) {
         this.cartRepository = cartRepository;
+        this.itemRepository = itemRepository;
     }
 
     public Cart getByUser(User user){
@@ -41,6 +40,12 @@ public class CartService {
         cart.setTotalPrice(tPrice);
 
         return cartRepository.save(cart);
+    }
+
+    public void clearCart(Cart cart){
+        for (CartItem item: cart.getItems()) {
+            itemRepository.delete(item);
+        }
     }
 }
 

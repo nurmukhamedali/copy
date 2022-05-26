@@ -28,7 +28,7 @@ public class CartItem implements Serializable {
     private Product product;
 
     @MapsId("cartId")
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name="cart_id", referencedColumnName = "id")
     @JsonView(Views.FullCartItemInfo.class)
     private Cart cart;

@@ -1,41 +1,45 @@
 <template>
-  <v-card>
+  <v-card flat class="px-2">
     <v-layout>
-      <div class="d-flex align-center">
-        <v-avatar tile color="" size="88">
-          <v-img
-              :src="item.product.image"
-              contain
-              alt="PineMelon"
-          />
-        </v-avatar>
+      <div class="mt-2">
+        <v-layout justify-center>
+          <v-avatar tile color="" size="88">
+            <v-img
+                v-if="item.product.image"
+                :src="item.product.image"
+                contain
+                @error="$event.target.src=this.defaultImage"
+            />
+            <v-img v-if="!item.product.image" :src="this.defaultImage" contain/>
+          </v-avatar>
+        </v-layout>
       </div>
       <v-flex>
-        <v-card-title class="pa-2">
-          <v-layout row>
-              <span class="text-truncate">{{ item.product.name }}</span>
-              <v-spacer></v-spacer>
-              <div class="px-2">
-                <h4 class="text-truncate">
-                  <span>$</span>
-                  {{ parseFloat(item.quantity * item.product.price).toFixed(2) }}
-                </h4>
-                <span class="text-truncate">
-                  <span>$</span>
-                  {{ parseFloat(item.product.price).toFixed(2) }}
-                  <span>ea</span>
-                </span>
-              </div>
+        <v-card-text class="pa-2">
+          <v-layout align-center row>
+            <h3 class="text-truncate">{{ item.product.name }}</h3>
+            <v-spacer></v-spacer>
+            <div class="px-2">
+              <h4 class="text-truncate">
+                <span>$</span>
+                {{ parseFloat(item.quantity * item.product.price).toFixed(2) }}
+              </h4>
+              <small class="text-truncate">
+                <span>$</span>
+                {{ parseFloat(item.product.price).toFixed(2) }}
+                <span>ea</span>
+              </small>
+            </div>
           </v-layout>
-        </v-card-title>
+        </v-card-text>
         <v-card-actions>
           <v-layout align-center justify-end row>
             <span small class="text-capitalize mx-2" style="cursor: pointer;" @click="del"><small>Remove</small></span>
             <v-item-group class=" v-btn--round">
-                <v-btn icon @click="decrement" small><v-icon>remove</v-icon></v-btn>
-                <v-btn icon small>{{ item.quantity }}</v-btn>
-                <v-btn icon @click="increment" small><v-icon>add</v-icon></v-btn>
-              </v-item-group>
+              <v-btn icon @click="decrement" small><v-icon>remove</v-icon></v-btn>
+              <v-btn icon small>{{ item.quantity }}</v-btn>
+              <v-btn icon @click="increment" small><v-icon>add</v-icon></v-btn>
+            </v-item-group>
           </v-layout>
         </v-card-actions>
       </v-flex>
@@ -48,7 +52,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: "CartItemCard",
   props: ['item', 'addItem'],
-  computed: mapState(['cart']),
+  computed: mapState(['cart', 'defaultImage']),
   methods: {
     ...mapActions(['removeCartItemAction', 'addCartItemAction']),
     increment() {

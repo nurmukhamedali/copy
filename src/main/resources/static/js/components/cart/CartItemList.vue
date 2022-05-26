@@ -1,32 +1,31 @@
 <template>
-  <v-container>
-    <v-layout>
-      <h3>Cart <span color="grey">({{ cart.totalItems }} items)</span></h3>
-    </v-layout>
-    <v-layout align-space-around justify-start column>
-      <v-flex>
-          <v-layout align-space-around justify-start column reverse>
-            <cart-item-card v-for="item in sortedCart"
-                            :key="item.id"
-                            :item="item"/>
-          </v-layout>
-      </v-flex>
-      <v-flex>
-          <v-layout align-space-around justify-end column>
-            <checkout></checkout>
-          </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-card color="grey lighten-4">
+    <v-card-title >
+      <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
+    </v-card-title>
+    <v-card-text class="py-0">
+      <v-layout align-space-around justify-start column reverse>
+        <cart-item-card v-for="item in sortedCart"
+                              :key="item.id"
+                              :item="item"/>
+      </v-layout>
+    </v-card-text>
+    <v-flex>
+      <v-layout align-space-around justify-end column>
+        <checkout></checkout>
+      </v-layout>
+    </v-flex>
+
+  </v-card>
 </template>
 
 <script>
-import {mapGetters, mapState,} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import CartItemCard from "components/cart/CartItemCard.vue";
 import Checkout from "components/cart/Checkout.vue";
 
 export default {
-  name: "CartItemList",
+  name: "CartItemShortList",
   components: {
     Checkout,
     CartItemCard,

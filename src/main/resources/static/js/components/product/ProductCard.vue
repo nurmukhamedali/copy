@@ -40,12 +40,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: "ProductCard",
   props: ['product', 'editProduct'],
-  data(){
-    return {
-      defaultImage: 'https://pinemelon.com/static/platform/frontend/assets/en/banners/store_main.svg'
-    }
-  },
-  computed: mapState(['profile']),
+  computed: mapState(['profile', 'defaultImage']),
   methods: {
     ...mapActions(['removeProductAction', 'addCartItemAction']),
     edit() {

@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "userp")
@@ -31,6 +32,10 @@ public class User implements Serializable {
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     @JsonView(Views.FullProfileInfo.class)
     private Cart cart;
+
+    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @JsonIgnore
+    private List<Order> orders;
 
     public String getId() {
         return id;
