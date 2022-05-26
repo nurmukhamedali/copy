@@ -1,22 +1,24 @@
 <template>
-  <v-card color="grey lighten-4">
-    <v-card-title >
-      <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
-    </v-card-title>
-    <v-card-text class="py-0">
-      <v-layout align-space-around justify-start column reverse>
-        <cart-item-card v-for="item in sortedCart"
-                              :key="item.id"
-                              :item="item"/>
-      </v-layout>
-    </v-card-text>
-    <v-flex>
-      <v-layout align-space-around justify-end column>
-        <checkout></checkout>
-      </v-layout>
-    </v-flex>
+  <v-container>
+    <v-card color="grey lighten-4">
+      <v-card-title >
+        <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
+      </v-card-title>
+      <v-card-text class="py-0">
+        <v-layout align-space-around justify-start column reverse>
+          <cart-item-card v-for="item in sortedCart"
+                          :key="item.id"
+                          :item="item"/>
+        </v-layout>
+      </v-card-text>
+      <v-flex>
+        <v-layout align-space-around justify-end column>
+          <checkout></checkout>
+        </v-layout>
+      </v-flex>
 
-  </v-card>
+    </v-card>
+  </v-container>
 </template>
 
 <script>

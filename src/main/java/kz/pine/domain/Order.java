@@ -35,9 +35,11 @@ public class Order implements Serializable {
     @JsonView(Views.FullCartInfo.class)
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
+
+
     @JsonView(Views.FullCartInfo.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yy HH:mm")
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @JsonView(Views.FullCartInfo.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yy HH:mm")

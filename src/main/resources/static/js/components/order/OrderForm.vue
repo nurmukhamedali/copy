@@ -1,37 +1,50 @@
 <template>
   <v-container>
     <v-form lazy-validation v-model="valid">
-      <v-text-field flat single-line solo class="contactInfo"
+      <v-text-field flat outline block
                     v-model="order.recipientName"
                     label="Name"
                     :rules="nameRules"></v-text-field>
-      <v-text-field flat single-line solo class="contactInfo"
+      <v-text-field flat outline block
                     v-model="order.recipientPhoneNumber"
                     label="Phone"
                     mask="(###)###-####"
       ></v-text-field>
-      <v-text-field flat single-line solo class="deliveryInfo"
+      <v-text-field flat outline block
                     v-model="order.deliveryAddress"
                     label="Delivery Address"
       ></v-text-field>
-      <v-menu
-          v-model="dateFieldVisible"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          min-width="290px"
-      >
-      </v-menu>
+      <v-text-field flat single-line outline block
+                    v-model="order.deliveryDate"
+                    label="Pick a delivery date"
+                    readonly
+      ></v-text-field>
+      <div class="mb-4">
+        <v-date-picker full-width no-title
+                       :min="minDeliveryDate"
+                       :max="maxDeliveryDate"
+                       v-model="order.deliveryDate"
+        ></v-date-picker>
+      </div>
+      <v-textarea flat outline
+                  v-model="order.deliveryInstructions"
+                  label="Delivery Instructions"
+      ></v-textarea>
+      <v-select outline single-line class=""
+                :items="paymentTypes"
+                v-model="order.paymentType"
+                item-text="type"
+                menu-props="auto"
+                placeholder="Select a payment type"
+                items-value="value"
+      ></v-select>
+      <v-btn block depressed round color="success" @click="placeOrder">Place Order</v-btn>
     </v-form>
-    <v-btn @click="placeOrder">PlaceOrder</v-btn>
   </v-container>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "OrderForm",
@@ -40,6 +53,9 @@ export default {
       valid: false,
       modal: false,
       dateFieldVisible: false,
+      minDeliveryDate: null,
+      maxDeliveryDate: null,
+      paymentTypes: [{type: "Cash", value: "CASH"}],
       order: {
         recipientName: '',
         recipientPhoneNumber: '',
@@ -53,10 +69,29 @@ export default {
       ],
     }
   },
+  computed: mapState(['items']),
+  created() {
+    this.maxDeliveryDate = this.getOneWeekAfter();
+    this.minDeliveryDate = this.getTomorrow();
+  },
   methods: {
     ...mapActions(['addOrderAction']),
     placeOrder(){
-      this.addOrderAction(this.order)
+      if (this.items){
+        this.addOrderAction(this.order)
+      } else {
+
+      }
+    },
+    getTomorrow(){
+      let date = new Date()
+      date.setDate(date.getDate() + 1)
+      return date.toISOString().substr(0, 10)
+    },
+    getOneWeekAfter(){
+      let date = new Date()
+      date.setDate(date.getDate() + 7)
+      return date.toISOString().substr(0, 10)
     }
   }
 }
@@ -65,8 +100,5 @@ export default {
 <style scoped>
 .contactInfo{
   width: 15rem
-}
-.deliveryInfo{
-  width: 20rem
 }
 </style>

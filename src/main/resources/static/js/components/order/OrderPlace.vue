@@ -1,13 +1,14 @@
 <template>
   <v-container>
+    <h2 class="mb-2" xs12>Order Checkout</h2>
     <v-layout align-start justify-space-around row reverse wrap>
-
       <v-flex sm12 md6>
         <cart-item-list></cart-item-list>
       </v-flex>
       <v-flex sm12 md6>
         <order-form></order-form>
       </v-flex>
+
     </v-layout>
 
   </v-container>
