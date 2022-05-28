@@ -2,18 +2,18 @@
   <v-container>
     <v-layout align-start justify-center row wrap>
       <v-flex class="pa-2" d-flex xs12 sm3 md3>
-        <v-img :src="profile.avatar" round></v-img>
+        <v-img :src="personalInfo.profile.avatar" round></v-img>
       </v-flex>
       <v-flex class="pa-2" d-flex xs12 sm4 md4>
         <v-layout align-start justify-space-around column>
-          <v-flex>{{ profile.name }}</v-flex>
-          <v-flex>{{ profile.username }}</v-flex>
-          <v-flex>{{ profile.address }}</v-flex>
+          <v-flex>{{ personalInfo.profile.name }}</v-flex>
+          <v-flex>{{ personalInfo.profile.username }}</v-flex>
+          <v-flex>{{ personalInfo.profile.address }}</v-flex>
         </v-layout>
       </v-flex>
-<!--      <v-btn v-if="profile" icon href="/logout">-->
-<!--        <v-icon>logout</v-icon>-->
-<!--      </v-btn>-->
+      <v-btn v-if="personalInfo.profile" icon href="/logout">
+        <v-icon>logout</v-icon>
+      </v-btn>
     </v-layout>
     <v-layout>
       <order-list></order-list>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 import OrderList from "components/order/OrderList.vue";
 
 export default {
@@ -30,7 +30,11 @@ export default {
   components: {
     OrderList
   },
-  computed: mapState(['profile'])
+  computed: mapState(['personalInfo']),
+  created() {
+    this.loadOrdersAction()
+  },
+  methods: mapActions(['loadOrdersAction'])
 }
 </script>
 

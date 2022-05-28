@@ -41,14 +41,14 @@ export default {
       this.$router.push('/dev-products')
     },
     showDevProfiles(){
-      this.$router.push('/dev-profiles')
+      this.$router.push('/dev-users')
     },
     showDevCategories(){
       this.$router.push('/dev-categories')
     },
     showDevOrders(){
       this.$router.push('/dev-orders')
-    }
+    },
   }
 }
 </script>

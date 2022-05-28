@@ -1,18 +1,17 @@
 <template>
   <v-container color="grey lighten-4">
     <v-card-title >
-      <h3>Order's History
-        &nbsp;
-        <span>({{ orders.length }} orders)</span>
+      <h3>Orders
+        <span>({{ personalInfo.orders.length }} orders)</span>
       </h3>
     </v-card-title>
     <v-layout justify-space-around row>
-      <v-flex md6>
+      <v-flex>
         <v-layout align-space-around justify-start column reverse>
-          <order-card v-for="order in orders" :key="order.id" :order="order"  :showOrder="showOrder"></order-card>
+          <order-card v-for="order in personalInfo.orders" :key="order.id" :order="order"  :showOrder="showOrder"></order-card>
         </v-layout>
       </v-flex>
-      <v-flex md6>
+      <v-flex sm6 md4>
         <order-item-short-list :order="order"/>
       </v-flex>
     </v-layout>
@@ -37,7 +36,7 @@ export default {
       order: null,
     }
   },
-  computed: mapState(['orders']),
+  computed: mapState(['personalInfo']),
   methods: {
     showOrder(order){
       this.order = order;

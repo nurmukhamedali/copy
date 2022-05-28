@@ -12,36 +12,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
-@CrossOrigin(origins="*")
-public class OrderController {
+@RequestMapping("/admin")
+public class AdminOrderController {
+
     private OrderService orderService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public AdminOrderController(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @PutMapping("/orders/{id}")
+    public Order updateStatus(
+            @PathVariable("id") Order old,
+            @RequestBody Order order,
+            @AuthenticationPrincipal User user
+    ){
+        Order updatedOrder = orderService.updateStatus(old, order, user);
+        return updatedOrder;
     }
 
     @GetMapping("/orders")
     @JsonView(Views.FullCartInfo.class)
-    public List<Order> getAllByUser(
+    public List<Order> getAll(
             @AuthenticationPrincipal User user
-    ) {
-        return orderService.findAllByUser(user);
-    }
-
-    @GetMapping("/orders/{id}")
-    @JsonView(Views.FullCartInfo.class)
-    public Order get(@PathVariable("id") Order order){
-        return orderService.getComputedOrder(order);
-    }
-
-    @PostMapping("/orders")
-    @JsonView(Views.FullCartInfo.class)
-    public Order create(
-            @RequestBody Order order,
-            @AuthenticationPrincipal User user
-    ) {
-        return orderService.create(order, user);
+    ){
+        return orderService.findAll(user);
     }
 }

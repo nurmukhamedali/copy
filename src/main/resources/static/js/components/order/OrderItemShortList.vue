@@ -2,6 +2,8 @@
   <v-card color="grey lighten-4" v-if="order">
     <v-card-title >
       <h3>Order #{{ order.id }} <span>({{ order.totalItems }} items)</span></h3>
+      <v-spacer></v-spacer>
+      <v-btn depressed round readonly :color="status">{{ order.status }}</v-btn>
     </v-card-title>
     <v-card-text class="py-0">
         <v-layout align-space-around justify-start column reverse>
@@ -32,12 +34,26 @@ export default {
     OrderItemShortCard,
   },
   props: ['order'],
-  data() {
-    return {
-      item: null
+  computed: mapState(['styleInfo']),
+  watch: {
+    order: function (){
+          this.changeBtn()
     }
   },
-  computed: {
+  data() {
+    return {
+      item: null,
+      status: 'primary'
+    }
+  },
+  methods: {
+    changeBtn(){
+      if(this.order) {
+        console.log(this.order.status)
+        this.status = this.styleInfo.statusColors[this.order.status.toLowerCase()]
+        console.log(this.order.status.toLowerCase())
+      }
+    }
   }
 }
 </script>

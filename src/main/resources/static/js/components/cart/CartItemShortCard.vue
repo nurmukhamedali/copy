@@ -36,7 +36,6 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: "CartItemShortCard",
   props: ['item', 'addItem'],
-  computed: mapState(['cart']),
   methods: {
     ...mapActions(['removeCartItemAction', 'addCartItemAction']),
     increment() {

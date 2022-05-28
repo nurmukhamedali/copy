@@ -2,9 +2,9 @@
   <div>
     <v-card-text>
       <v-layout align-start>
-        <span>Subtotal</span>&nbsp;<span color="grey">({{ cart.totalItems }} items)</span>
+        <span>Subtotal</span>&nbsp;<span color="grey">({{ personalInfo.cart.totalItems }} items)</span>
         <v-spacer></v-spacer>
-        <div>${{ parseFloat(cart.totalPrice).toFixed(2) }}</div>
+        <div>${{ parseFloat(personalInfo.cart.totalPrice).toFixed(2) }}</div>
       </v-layout>
     </v-card-text>
     <v-divider></v-divider>
@@ -12,11 +12,11 @@
       <v-layout>
         <span>Estimated Total</span>
         <v-spacer></v-spacer>
-        <h4>$ {{ parseFloat(cart.totalPrice).toFixed(2) }}</h4>
+        <h4>$ {{ parseFloat(personalInfo.cart.totalPrice).toFixed(2) }}</h4>
       </v-layout>
     </v-card-text>
   <v-layout justify-center class="ma-2" v-show="$route.path !== '/checkout'">
-    <v-btn round depressed block color="success">Checkout</v-btn>
+    <v-btn round depressed block color="success" @click="showCart">Checkout</v-btn>
   </v-layout>
   </div>
 </template>
@@ -26,7 +26,12 @@ import {mapState} from "vuex";
 
 export default {
   name: "Checkout",
-  computed: mapState(['cart']),
+  computed: mapState(['personalInfo']),
+  methods: {
+    showCart() {
+      this.$router.push('/checkout')
+    }
+  }
 }
 </script>
 

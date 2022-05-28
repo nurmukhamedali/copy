@@ -2,7 +2,7 @@
   <v-container>
     <v-card color="grey lighten-4">
       <v-card-title >
-        <h3>Cart <span>({{ cart.totalItems }} items)</span></h3>
+        <h3>Cart <span>({{ personalInfo.cart.totalItems }} items)</span></h3>
       </v-card-title>
       <v-card-text class="py-0">
         <v-layout align-space-around justify-start column reverse>
@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     ...mapGetters(['sortedCart']),
-    ...mapState(['cart'])
+    ...mapState(['personalInfo'])
   }
 }
 </script>

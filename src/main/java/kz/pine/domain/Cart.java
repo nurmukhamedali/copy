@@ -29,7 +29,7 @@ public class Cart implements Serializable {
     private int totalItems;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonIgnore
+    @JsonView(Views.FullCartInfo.class)
     private List<CartItem> items;
 
     public Long getId() {

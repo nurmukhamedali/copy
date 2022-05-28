@@ -46,7 +46,7 @@ export default {
       defaultImage: 'https://pinemelon.com/static/platform/frontend/assets/en/banners/store_main.svg'
     }
   },
-  computed: mapState(['profile']),
+  computed: mapState(['personalInfo']),
   methods: {
     ...mapActions(['removeProductAction', 'addCartItemAction']),
     edit() {

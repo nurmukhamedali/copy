@@ -38,8 +38,17 @@
                 placeholder="Select a payment type"
                 items-value="value"
       ></v-select>
-      <v-btn block depressed round color="success" @click="placeOrder">Place Order</v-btn>
+      <v-alert
+          :value="isCartEmpty"
+          type="error"
+      >
+        Cart is empty. Let's pick some goods first.
+      </v-alert>
+      <v-btn block depressed round color="success" @click="placeOrder"
+             :disabled="isCartEmpty"
+      >Place Order</v-btn>
     </v-form>
+
   </v-container>
 </template>
 
@@ -51,8 +60,8 @@ export default {
   data(){
     return {
       valid: false,
-      modal: false,
       dateFieldVisible: false,
+      isCartEmpty: true,
       minDeliveryDate: null,
       maxDeliveryDate: null,
       paymentTypes: [{type: "Cash", value: "CASH"}],
@@ -69,29 +78,31 @@ export default {
       ],
     }
   },
-  computed: mapState(['items']),
+  computed: mapState(['personalInfo']),
   created() {
     this.maxDeliveryDate = this.getOneWeekAfter();
     this.minDeliveryDate = this.getTomorrow();
+    this.isCartEmpty = this.personalInfo.cart.items.length < 1;
+    this.order.recipientName = this.personalInfo.profile.name;
+    this.order.deliveryAddress = this.personalInfo.profile.address;
   },
   methods: {
     ...mapActions(['addOrderAction']),
     placeOrder(){
-      if (this.items){
+      if (this.personalInfo.cart.items){
         this.addOrderAction(this.order)
+        this.$router.push('/profile')
       } else {
-
       }
     },
     getTomorrow(){
       let date = new Date()
-      date.setDate(date.getDate() + 1)
-      return date.toISOString().substr(0, 10)
+      return date.toISOString()
     },
     getOneWeekAfter(){
       let date = new Date()
       date.setDate(date.getDate() + 7)
-      return date.toISOString().substr(0, 10)
+      return date.toISOString()
     }
   }
 }

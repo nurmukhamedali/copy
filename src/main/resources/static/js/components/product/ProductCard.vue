@@ -40,7 +40,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: "ProductCard",
   props: ['product', 'editProduct'],
-  computed: mapState(['profile', 'defaultImage']),
+  computed: mapState(['personalInfo', 'defaultImage']),
   methods: {
     ...mapActions(['removeProductAction', 'addCartItemAction']),
     edit() {
@@ -53,7 +53,7 @@ export default {
       this.addCartItemAction({
         quantity: 1,
         product: this.product,
-        user: this.profile
+        user: this.personalInfo.profile
       })
     }
   }

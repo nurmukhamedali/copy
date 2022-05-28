@@ -22,12 +22,11 @@ public class CartItemController {
     }
 
     @PostMapping
-    @JsonView(Views.FullCartItemInfo.class)
+    @JsonView(Views.FullCartInfo.class)
     public CartItem add(
             @RequestBody CartItem item,
             @AuthenticationPrincipal User user
     ){
-
         return itemService.addToCart(item, user);
     }
 

@@ -31,7 +31,7 @@
         <v-layout justify-center>
           <v-pagination
               v-model="page"
-              :length="totalPages"
+              :length="productInfo.totalPages"
               @input="load"
           ></v-pagination>
         </v-layout>
@@ -44,7 +44,7 @@
         <v-layout justify-center>
           <v-pagination
               v-model="page"
-              :length="totalPages"
+              :length="productInfo.totalPages"
               @input="load"
           ></v-pagination>
         </v-layout>
@@ -68,17 +68,17 @@ export default {
     return {
       product: null,
       page: 1,
-      price: [0, 100],
+      price: [0, 20],
       categoryId: null,
       totalProducts: null,
     }
   },
   computed: {
     ...mapGetters(['sortedProducts', 'sortedCategories']),
-    ...mapState(['totalPages', 'currentPage'])
+    ...mapState(['productInfo'])
   },
   created() {
-    this.page = this.currentPage + 1;
+    this.page = this.productInfo.currentPage + 1;
     this.load()
   },
   methods: {

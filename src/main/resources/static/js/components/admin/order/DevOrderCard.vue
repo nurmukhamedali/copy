@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="ma-1 v-btn--round" @click="show" >
+  <v-card flat class="ma-1 v-btn--round" @click="show">
     <v-card-text class="py-2 px-0">
       <v-layout align-center justify-space-around>
         <small class="text-truncate"># {{ order.id }}</small>
@@ -20,7 +20,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 export default {
-  name: "OrderCard",
+  name: "DevOrderCard",
   props: ['order', 'showOrder'],
   methods: {
     show(){

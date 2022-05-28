@@ -52,7 +52,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: "CartItemCard",
   props: ['item', 'addItem'],
-  computed: mapState(['cart', 'defaultImage']),
+  computed: mapState(['personalInfo', 'defaultImage']),
   methods: {
     ...mapActions(['removeCartItemAction', 'addCartItemAction']),
     increment() {
